@@ -55,3 +55,7 @@ export async function VerifyUserHandler(req:Request<VerifyUserInput>,res:Respons
     }
 
 }
+
+export  function forgotPassowrdHandler(req:Request,res:Response) {
+    
+}
