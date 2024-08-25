@@ -5,3 +5,9 @@ interface ISMTP {
         port: number,
         secure: boolean
 }
+
+
+interface ISIGNIN{
+        accessTokenPrivateKey:string,
+        refreshTokenPrivateKey:string,
+}
