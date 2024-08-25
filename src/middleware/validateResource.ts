@@ -1,5 +1,5 @@
 import { Request,Response,NextFunction } from "express";
-import { AnyZodObject } from "zod";
+import { AnyZodObject, ZodError } from "zod";
 
 
 const validateResource = (schema:AnyZodObject)=>(req:Request,res:Response,next:NextFunction)=>{
@@ -11,7 +11,11 @@ const validateResource = (schema:AnyZodObject)=>(req:Request,res:Response,next:N
         });
         next()
     } catch (e:any) {
-       return res.status(400).send(e.error)
+        if (e instanceof ZodError) {
+            
+            return res.status(400).send(e.errors[0].message)
+        }
+        return res.status(400).send("Un expected error occured"+e)
     }
 }
 

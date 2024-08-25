@@ -27,7 +27,7 @@ async function  sendEmail(payload:SendMailOptions) {
             return
         }
         
-        log.info("Preview email is ",nodemailer.getTestMessageUrl(info))
+        log.info("Preview email is " + nodemailer.getTestMessageUrl(info))
     })
 }
 export default sendEmail
