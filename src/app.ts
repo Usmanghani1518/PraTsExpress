@@ -9,7 +9,9 @@ import router from "./routes/index"
 const app = express()
 const port = config.get("port")
 
+app.use(express.json())
 app.use(router)
+
 
 dotenv.config({
 path:"./.env"
