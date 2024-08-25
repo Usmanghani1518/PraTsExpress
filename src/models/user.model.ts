@@ -1,4 +1,4 @@
-import { DocumentType, getModelForClass, modelOptions, pre, prop, Severity } from "@typegoose/typegoose";
+import { DocumentType, getModelForClass, index, modelOptions, pre, prop, Severity } from "@typegoose/typegoose";
 import  argon  from "argon2";
 import log from "../utils/logger";
 import {v4 as uuidv4} from "uuid"
@@ -24,6 +24,7 @@ import {v4 as uuidv4} from "uuid"
     }
 })
 
+@index({email:1})
 
 export class User{
     @prop({lowercase:true,unique:true, required:true})
@@ -45,7 +46,7 @@ export class User{
     verificationCode:string;
 
     @prop()
-    passwordResetCode:string;
+    passwordResetCode:string | null;
 
     @prop({default:false})
     verified:boolean

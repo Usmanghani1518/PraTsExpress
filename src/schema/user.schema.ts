@@ -1,3 +1,4 @@
+import { PassThrough } from "nodemailer/lib/xoauth2";
 import {object,string,TypeOf} from "zod"
 
 
@@ -35,6 +36,34 @@ export const VerifyUserSchema = object({
     })
 })
 
+export const ForgotPasswordSchema = object({
+    body:object({
+        email:string({
+            required_error:"eamil is required"
+        }).email('Not valid email adress ')
+    })
+})
+
+export const ResetPasswordSchema = object({
+    params:object({
+        id:string(),
+        passwordResetCode:string()
+    }),
+    body:object({
+        password:string({
+            required_error:"Password is required"
+        }).trim().min(6,"Password at least 6 chars"),
+        passwordConfirmation:string({
+            required_error:"Password is required"
+        }).trim()
+    }).refine((data)=>data.password === data.passwordConfirmation,{
+        message:"Password do not Match",
+        path:["passwordConfirmation"]
+    })
+})
+
 
 export type CreateUserInput = TypeOf<typeof CreateUserSchema>['body']
 export type VerifyUserInput = TypeOf<typeof VerifyUserSchema>["params"]
+export type ForgotPasswordInput = TypeOf <typeof ForgotPasswordSchema>["body"]
+export type ResetPasswordInput = TypeOf <typeof ResetPasswordSchema>
