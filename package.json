@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@types/config": "^3.3.4",
+    "@types/ejs": "^3.1.5",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/lodash": "^4.17.7",
@@ -27,6 +28,7 @@
     "config": "^3.3.12",
     "dayjs": "^1.11.13",
     "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
     "express": "^5.0.0-beta.3",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",

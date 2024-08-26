@@ -1,3 +1,5 @@
+import { MailOptions } from "nodemailer/lib/json-transport"
+
 interface ISMTP {
         user: string,
         pass: string,
@@ -10,4 +12,10 @@ interface ISMTP {
 interface ISIGNIN{
         accessTokenPrivateKey:string,
         refreshTokenPrivateKey:string,
+}
+
+interface ISENDMAIL{
+        payload:MailOptions;
+        templateName:String;
+        context:Record<string,any>;
 }
