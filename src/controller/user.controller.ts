@@ -1,9 +1,10 @@
 import { Response,Request } from "express";
 import { CreateUserInput, ForgotPasswordInput, ResetPasswordInput, VerifyUserInput } from "../schema/user.schema";
 import { createUser, findUserById,findUserByEmail } from "../service/user.service";
-import sendEmail from "../utils/mailer";
+import sendEmail from "../../mailer";
 import log from "../utils/logger";
 import {v4 as uuid} from "uuid"
+import { MailOptions } from "nodemailer/lib/json-transport";
 
 
 export async function createUserHandler(req:Request<{},{},CreateUserInput>,res:Response) {
@@ -11,15 +12,28 @@ export async function createUserHandler(req:Request<{},{},CreateUserInput>,res:R
     const body = req.body;
 
     try {
+        
         const user = await createUser(body);
 
-        await sendEmail({
-            from:"usman@alghani.com",
-            to:user.email,
-            subject:'Your verification code is ',
-            text:`verification code is ${user.verificationCode} Id:${user._id}`
+        // {
+            // from:"usman@alghani.com",
+            // to:user.email,
+            // subject:'Your verification code is ',
+            // text:`verification code is ${user.verificationCode} Id:${user._id}`,
+    
+        // }
+        const mail:MailOptions={
+             to:user.email,
+             subject:"Verify your email in Al-Ghani"
+        }
+        const context= {
+            name:user.firstName +" "+user.lastName,
+            id:user._id.toString(),
+            Code:user.verificationCode
+        }
 
-        })
+
+        await sendEmail(mail,context,"Mail")
 
         return res.status(201).send("User Created Successfully")
     } catch (e:any) {
@@ -71,15 +85,20 @@ export  async function forgotPassowrdHandler(req:Request<{},{},ForgotPasswordInp
      }
      const passwordResetCode = uuid();
      user.passwordResetCode = passwordResetCode;
-     await user.save();
-
-     await sendEmail({
-        from:"ceo@alghani.com",
-        to:"ali@example.com",
-        subject:" Your code for reset the password is here ",
-        text:`Password reset code is ${passwordResetCode} and the id is ${user._id} `
-     })
-
+     
+     const mail:MailOptions={
+         to:user.email,
+         subject:"Verify your email in Al-Ghani"
+        }
+        const context= {
+            name:user.firstName +" "+user.lastName,
+            id:user._id.toString(),
+            Code:user.passwordResetCode
+        }
+        
+        await sendEmail(mail,context,'Mail')
+        
+        await user.save();
      return res.status(200).send(`Email is send on you eamil successfully `)
 
    } catch (error) {
