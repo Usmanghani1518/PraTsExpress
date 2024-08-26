@@ -1,4 +1,3 @@
-import { PassThrough } from "nodemailer/lib/xoauth2";
 import {object,string,TypeOf} from "zod"
 
 
